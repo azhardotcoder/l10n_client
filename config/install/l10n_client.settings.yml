@@ -1,0 +1,3 @@
+disabled_paths: ''
+use_server: false
+server: 'https://localize.drupal.org'

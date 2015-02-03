@@ -1,0 +1,5 @@
+l10n_client.settings:
+  route_name: l10n_client.settings
+  base_route: locale.translate_page
+  title: Client
+  weight: 105
