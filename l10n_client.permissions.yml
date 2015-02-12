@@ -1,7 +1,0 @@
-use on-page translation:
-  title: 'Use on-page translation'
-  description: 'Makes it possible to translate the Drupal interface on-page.'
-
-submit translations to localization server:
-  title: 'Submit translations to localization server'
-  description: 'Allows users to submit translations to a remote localization server.'

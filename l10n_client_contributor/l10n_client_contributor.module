@@ -1,0 +1,64 @@
+<?php
+
+/**
+ * @file
+ * Submits translations to a remote localization server.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+
+function l10n_client_contributor_form_l10n_client_ui_settings_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+
+  $config = \Drupal::configFactory()->getEditable('l10n_client_contributor.settings');
+  $form['l10n_client_contributor_use_server'] = array(
+    '#title'         => t('Enable sharing translations with server'),
+    '#type'          => 'checkbox',
+    '#default_value' => $config->get('use_server'),
+  );
+  $form['l10n_client_contributor_server'] = array(
+    '#title'         => t('Address of localization server to use'),
+    '#type'          => 'textfield',
+    '#description'   => t('Each translation submission will also be submitted to this server. We suggest you enter <a href="@localize">http://localize.drupal.org</a> to share with the greater Drupal community. Make sure you set up an API-key in the user account settings for each user that will participate in the translations.', array('@localize' => 'http://localize.drupal.org')),
+    '#default_value' => $config->get('server'),
+  );
+
+  $form['#validate'][] = 'l10n_client_contributor_form_l10n_client_ui_settings_form_validate';
+  $form['actions']['submit']['#submit'][] = 'l10n_client_contributor_form_l10n_client_ui_settings_form_submit';
+}
+
+/**
+ * Validation for added settings on localization client UI settings form.
+ */
+function l10n_client_contributor_form_l10n_client_ui_settings_form_validate($form, FormStateInterface $form_state) {
+  // Verify connection with the server if enabled.
+  if ($form_state->getValue('l10n_client_contributor_use_server')) {
+    if (!$form_state->isValueEmpty('l10n_client_contributor_server')) {
+      // Try to invoke the remote string submission with a test request.
+      $response = xmlrpc($form_state->getValue('l10n_client_contributor_server') . '/xmlrpc.php', array('l10n.server.test' => array('2.0')));
+      if ($response && !empty($response['name']) && !empty($response['version'])) {
+        if (empty($response['supported']) || !$response['supported']) {
+          $form_state->setErrorByName('l10n_client_contributor_server', t('The given server could not handle the v2.0 remote submission API.'));
+        }
+        else {
+          drupal_set_message(t('Verified that the specified server can handle remote string submissions. Supported languages: %languages.', array('%languages' => $response['languages'])));
+        }
+      }
+      else {
+        $form_state->setErrorByName('l10n_client_contributor_server', t('Invalid localization server address specified. Make sure you specified the right server address.'));
+      }
+    }
+    else {
+      $form_state->setErrorByName('l10n_client_contributor_server', t('You should provide a server address, such as http://localize.drupal.org'));
+    }
+  }
+}
+
+/**
+ * Submission function for additional settings on localization client settings.
+ */
+function l10n_client_contributor_form_l10n_client_ui_settings_form_submit($form, FormStateInterface $form_state) {
+  \Drupal::configFactory()->getEditable('l10n_client_contributor.settings')
+    ->set('use_server', $form_state->getValue('l10n_client_contributor_use_server'))
+    ->set('server', $form_state->getValue('l10n_client_contributor_server'))
+    ->save();
+}

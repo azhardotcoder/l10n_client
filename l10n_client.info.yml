@@ -1,9 +1,0 @@
-name: 'Localization client'
-description: 'Provides on-page localization'
-type: module
-core: 8.x
-configure: locale.translate_page
-dependencies:
-  - locale
-  - xmlrpc
-package: Multilingual

@@ -1,0 +1,14 @@
+<?php
+
+/**
+ * @file
+ * On-page tool for easier interface translation.
+ */
+
+function l10n_client_ui_menu_local_tasks_alter(&$data, $route_name) {
+  // This module adds one more settings screen, so modify the existing
+  // settings screen to be more specific about what it is doing.
+  if (!empty($data['tabs'][0]['locale.settings'])) {
+    $data['tabs'][0]['locale.settings']['#link']['title'] = t('Update settings');
+  }
+}
