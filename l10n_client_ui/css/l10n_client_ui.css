@@ -39,5 +39,19 @@
 }
 .l10n_client_ui--container #edit-list {
   overflow-y: scroll;
-  height: 150px;
+  height: 180px;
+  clear: both;
+}
+.l10n_client_ui--container .form-item-type,
+.l10n_client_ui--container .form-item-search {
+  float: left;
+}
+.l10n_client_ui--container .form-item-search {
+  padding-left: 15px;
+}
+.l10n_client_ui--container .form-item-search label {
+  visibility: hidden;
+}
+.l10n_client_ui--container .form-item-search input {
+  width: 300px;
 }

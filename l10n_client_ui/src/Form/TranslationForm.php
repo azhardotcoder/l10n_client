@@ -49,6 +49,7 @@ class TranslationForm extends FormBase {
       ),
     );
     $form['filters']['search'] = array(
+      '#title' => $this->t('Contains'),
       '#type' => 'search',
       '#placeholder' => $this->t('Search')
     );
