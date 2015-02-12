@@ -1,0 +1,43 @@
+/* Tab appearance. */
+.toolbar .toolbar-bar .l10n_client_ui-toolbar-tab.toolbar-tab {
+  float: right; /* LTR */
+}
+[dir="rtl"] .toolbar .toolbar-bar .l10n_client_ui-toolbar-tab.toolbar-tab {
+  float: left;
+}
+.toolbar .toolbar-bar .l10n_client_ui-toolbar-tab .toolbar-item {
+  margin: 0;
+}
+[dir="rtl"] .toolbar .toolbar-bar .l10n_client_ui-toolbar-tab .toolbar-item {
+  padding-right: 1.3333em;
+}
+.toolbar .l10n_client_ui-toolbar-tab button.active {
+  background-image: -webkit-linear-gradient(rgba(255, 255, 255, 0.25) 20%, transparent 200%);
+  background-image: linear-gradient(rgba(255, 255, 255, 0.25) 20%, transparent 200%);
+}
+.l10n_client_ui-toolbar-tab button:focus {
+  outline: thin dotted;
+}
+.toolbar-bar .toolbar-icon-l10n_client_ui:before {
+  background-image: url(../images/translate_icon_bebebe.svg);
+}
+.toolbar-bar .toolbar-icon-l10n_client_ui:active:before,
+.toolbar-bar .toolbar-icon-l10n_client_ui:before {
+  background-image: url(../images/translate_icon_ffffff.svg);
+}
+
+/* @todo Remove once http://drupal.org/node/1916690 is resolved. */
+.toolbar .l10n_client_ui-toolbar-tab.toolbar-tab.hidden {
+  display: none;
+}
+
+.l10n_client_ui--container {
+  display: none;
+}
+.l10n_client_ui--container .ui-dialog {
+  display: block;
+}
+.l10n_client_ui--container #edit-list {
+  overflow-y: scroll;
+  height: 150px;
+}
