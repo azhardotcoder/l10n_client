@@ -59,9 +59,9 @@
                 addClass('l10n_client_ui--language--' + langcode).
                 addClass('l10n_client_ui--status--' + (strings[langcode][context][string] == false ? 'un' : '') + 'translated');
             row.append($(document.createElement('td')).text(string));
-            var input = $(document.createElement('input')).
-                attr('type', 'text').
-                attr('value', strings[langcode][context][string]);
+            var input = $(document.createElement('textarea')).
+                    attr('rows', 1).
+                    text(strings[langcode][context][string]);
             row.append($(document.createElement('td')).append(input));
             row.append($(document.createElement('td')).text('X'));
             row.append($(document.createElement('td')).text('X'));
