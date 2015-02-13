@@ -8,7 +8,7 @@ l10n_client_ui:
     - core/drupal
     - core/jquery.cookie
     - core/dialog
-    - core/backbone
+    - core/jquery.joyride
   css:
     component:
       css/l10n_client_ui.css: {}

@@ -63,7 +63,7 @@
     if ($('.l10n_client_ui--container table tr').length <= 1) {
       var strings = drupalSettings.l10n_client_ui;
       var rows = document.createElement('tbody');
-      //var sources = [];
+      var sources = [];
       for (var langcode in strings) {
         for (var context in strings[langcode]) {
           for (var string in strings[langcode][context]) {
@@ -77,27 +77,52 @@
                     data('l10n-client-ui-langcode', langcode).
                     data('l10n-client-ui-context', context).
                     data('l10n-client-ui-translated', translated).
-                    data('l10n-client-ui-translation', translated ? strings[langcode][context][string][0] : '');
+                    data('l10n-client-ui-translation', translated ? strings[langcode][context][string][0] : '').
+                    keyup(function() {
+                      $(this).closest('tr').find('td.l10n_client_ui--save').addClass('activated');
+                    });
             row.append($(document.createElement('td')).append(input));
-            row.append($(document.createElement('td')).text('X').click(Drupal.l10n_client_ui.saveTranslation));
-            row.append($(document.createElement('td')).text('X').click(
+            row.append($(document.createElement('td')).addClass('l10n_client_ui--save').text('X').click(Drupal.l10n_client_ui.saveTranslation));
+            row.append($(document.createElement('td')).addClass('l10n_client_ui--skip').text('X').click(
                 function() {
                   $(this).closest('tr').fadeOut();
                 }
             ));
             $(rows).append(row);
-            /*if (!translated) {
+            if (!translated) {
               sources.push(string);
-            }*/
+            }
           }
         }
       }
-      /*sources.sort(function(a, b){
+      sources.sort(function(a, b){
         return b.length - a.length;
       });
+
+      var ride = false;
+      $('body').append('<ol id="l10n_client_ui-ride"></ol>');
       for (var index in sources) {
-        Drupal.l10n_client_ui.findClosest(index, sources[index], $('div')).addClass('found').addClass('found-' + index.toString());
-      }*/
+        var items = Drupal.l10n_client_ui.findClosest(index, sources[index], $('body'));
+        for (var item in items) {
+          var generalClass = 'l10n_client_ui-item-' + index.toString();
+          var specificClass = 'l10n_client_ui-item-' + index.toString() + '-' + item;
+          if (!$(items[item]).hasClass(generalClass)) {
+            $(items[item]).addClass(generalClass).addClass(specificClass);
+            $('#l10n_client_ui-ride').append('<li data-class="' + specificClass + '"><h2>' + Drupal.t('Translate string') + '</h2><div class="l10n_client_ui-tip-source">' + sources[index] + '</div><div><textarea></textarea></div></li>');
+            ride = true;
+          }
+        }
+      }
+      if (ride) {
+        $('#l10n_client_ui-ride').joyride({
+          autoStart: true,
+          template: {
+            link: '<a href=\"#close\" class=\"joyride-close-tip\">&times;</a>',
+            button: '<a href=\"#\" class=\"button button--primary joyride-next-tip\"></a>'
+          }
+        });
+      }
+
       $('.l10n_client_ui--container table').append(rows);
       // Initialize the interface with statistics and filter based on defaults.
       Drupal.l10n_client_ui.displayStats();
@@ -105,19 +130,20 @@
     }
   }
 
-  /*Drupal.l10n_client_ui.findClosest = function(index, text, elements) {
-    var children = $(elements).find('div:contains("' + text + '")');
+  Drupal.l10n_client_ui.findClosest = function(index, text, elements) {
+    var children = $(elements).find(':contains("' + text + '")');
     if (children.length) {
-      // If we still found the same text in some children, keep looking.
-      return Drupal.l10n_client_ui.findClosest(index, text, children);
+      var exact = children.filter(function() {
+        return $(this).html() == text;
+      }).toArray();
+      var contains = children.filter(function() {
+        return $(this).html() != text;
+      });
+      return exact.concat(Drupal.l10n_client_ui.findClosest(index, text, contains));
     }
-    else {
-      console.log(text);
-      console.log(elements.length);
-      // Otherwise, we found the closest element.
-      return elements;
-    }
-  }*/
+    // Otherwise, we found no matches.
+    return [];
+  }
 
   /**
    * Execute filters on the list of translatable strings.
@@ -147,9 +173,10 @@
   Drupal.l10n_client_ui.saveTranslation = function() {
     var translation = $(this).closest('tr').find('textarea');
     if (translation.val().length) {
+      $(this).closest('tr').find('td.l10n_client_ui--save').removeClass('activated').addClass('saving');
       drupalSettings.l10n_client_ui[translation.data('l10n-client-ui-langcode')][translation.data('l10n-client-ui-context')][translation.data('l10n-client-ui-source')] = translation.val();
       Drupal.l10n_client_ui.displayStats();
-      $(this).data('l10n-client-ui-translated', true).data('l10n-client-ui-translation', translation.val());
+      $(translation).data('l10n-client-ui-translated', true).data('l10n-client-ui-translation', translation.val());
       $(this).closest('tr').fadeOut();
     }
   }
