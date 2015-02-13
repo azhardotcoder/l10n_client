@@ -83,7 +83,7 @@ function l10n_client_ui_preprocess_page(&$variables) {
             'source' => $string,
             'context' => $context,
           ));
-          $strings[$langcode][$context][$string] = $translation && !empty($translation->translation) ? $translation->translation : FALSE;
+          $strings[$langcode][$context][$string] = [$translation && !empty($translation->translation) ? $translation->translation : FALSE];
         }
       }
     }

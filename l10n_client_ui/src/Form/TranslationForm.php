@@ -40,12 +40,17 @@ class TranslationForm extends FormBase {
       '#type' => 'select',
       '#options' => $this->languages,
     );
+    $form['filters']['stats'] = array(
+      '#title' => $this->t('Stats'),
+      '#type' => 'item',
+      '#markup' => '<div class="l10n_client_ui--stats"><div class="l10n_client_ui--stats-done"></div></div>',
+    );
     $form['filters']['type'] = array(
       '#title' => $this->t('Find and translate'),
       '#type' => 'select',
       '#options' => array(
-        'untranslated' => $this->t('Untranslated strings'),
-        'translated' => $this->t('Translated strings'),
+        'false' => $this->t('Untranslated strings'),
+        'true' => $this->t('Translated strings'),
       ),
     );
     $form['filters']['search'] = array(
