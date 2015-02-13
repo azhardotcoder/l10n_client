@@ -14,27 +14,10 @@
     attach: function (context) {
       $('body').once('l10n_client_ui', function () {
         $('#toolbar-tab-l10n_client_ui').click(function () {
-          Drupal.l10n_client_ui.buildUi();
-          Drupal.l10n_client_ui.toggle(true);
-          Drupal.dialog(
-              $('.l10n_client_ui--container').get(0),
-              {
-                title: Drupal.t('Translate interface'),
-                buttons: [
-                  {
-                    text: Drupal.t('Close'),
-                    click: function () {
-                      $(this).dialog("close");
-                      Drupal.l10n_client_ui.toggle(false);
-                    }
-                  }
-                ],
-                width: '50%',
-                close: function () {
-                  Drupal.l10n_client_ui.toggle(false);
-                }
-              }
-          ).showModal();
+          if (Drupal.l10n_client_ui.buildUi()) {
+            Drupal.l10n_client_ui.toggle(true);
+            Drupal.l10n_client_ui.showModal();
+          }
         });
         $('.l10n-client-ui-translation-form .form-item-language select').change(function() {
           Drupal.l10n_client_ui.displayStats();
@@ -113,20 +96,23 @@
           }
         }
       }
+      $('.l10n_client_ui--container table').append(rows);
+      // Initialize the interface with statistics and filter based on defaults.
+      Drupal.l10n_client_ui.displayStats();
+      Drupal.l10n_client_ui.runFilters();
+
       if (ride) {
         $('#l10n_client_ui-ride').joyride({
           autoStart: true,
           template: {
             link: '<a href=\"#close\" class=\"joyride-close-tip\">&times;</a>',
             button: '<a href=\"#\" class=\"button button--primary joyride-next-tip\"></a>'
-          }
+          },
+          postRideCallback: Drupal.l10n_client_ui.showModal
         });
       }
 
-      $('.l10n_client_ui--container table').append(rows);
-      // Initialize the interface with statistics and filter based on defaults.
-      Drupal.l10n_client_ui.displayStats();
-      Drupal.l10n_client_ui.runFilters();
+      return !ride;
     }
   }
 
@@ -186,7 +172,7 @@
    */
   Drupal.l10n_client_ui.displayStats = function() {
     var stats = Drupal.l10n_client_ui.computeStats();
-    var percent = Math.round(stats.all / 100 * stats.translated);
+    var percent = Math.round((stats.translated / stats.all) * 100);
     $('.l10n-client-ui-translation-form .form-item-stats label').text(Drupal.t('@percent% translated', {'@percent' : percent}));
     $('.l10n_client_ui--stats-done').css('width', 2 * percent);
   }
@@ -208,6 +194,28 @@
       }
     }
     return {'all' : allCount, 'translated': translatedCount};
+  }
+
+  Drupal.l10n_client_ui.showModal = function() {
+    Drupal.dialog(
+        $('.l10n_client_ui--container').get(0),
+        {
+          title: Drupal.t('Translate interface'),
+          buttons: [
+            {
+              text: Drupal.t('Close'),
+              click: function () {
+                $(this).dialog("close");
+                Drupal.l10n_client_ui.toggle(false);
+              }
+            }
+          ],
+          width: '50%',
+          close: function () {
+            Drupal.l10n_client_ui.toggle(false);
+          }
+        }
+    ).showModal();
   }
 
 })(jQuery, Drupal, document);
