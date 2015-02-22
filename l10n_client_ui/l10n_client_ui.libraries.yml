@@ -7,7 +7,7 @@ l10n_client_ui:
     - core/jquery.once
     - core/drupal
     - core/jquery.cookie
-    - core/dialog
+    - core/drupal.dialog
     - core/jquery.joyride
   css:
     component:
