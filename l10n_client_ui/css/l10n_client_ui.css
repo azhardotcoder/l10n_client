@@ -102,6 +102,9 @@
 .l10n_client_ui-tip-source {
   margin-bottom: 1em;
 }
+.l10n_client_ui-tip-target {
+  color: #333;
+}
 
 /* Override placement of the tour progress indicator. */
 .tour-progress {

@@ -91,7 +91,7 @@
           var specificClass = 'l10n_client_ui-item-' + index.toString() + '-' + item;
           if (!$(items[item]).hasClass(generalClass)) {
             $(items[item]).addClass(generalClass).addClass(specificClass);
-            $('#l10n_client_ui-ride').append('<li data-class="' + specificClass + '"><h2>' + Drupal.t('Translate string') + '</h2><div class="l10n_client_ui-tip-source">' + sources[index] + '</div><div><textarea></textarea></div></li>');
+            $('#l10n_client_ui-ride').append('<li data-class="' + specificClass + '"><h2>' + Drupal.t('Translate string') + '</h2><div class="l10n_client_ui-tip-source">' + sources[index] + '</div><div class="l10n_client_ui-tip-target"><textarea></textarea></div></li>');
             ride = true;
           }
         }
