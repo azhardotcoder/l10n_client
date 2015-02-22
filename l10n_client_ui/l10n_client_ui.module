@@ -17,7 +17,7 @@ function l10n_client_ui_access_tools() {
     // @todo figure out how to skip the string collection itself in this case.
     \Drupal::currentUser()->hasPermission('use localization client ui') &&
     (
-      \Drupal::languageManager()->getCurrentLanguage() != 'en' ||
+      \Drupal::languageManager()->getCurrentLanguage()->getID() != 'en' ||
       locale_translate_english()
     );
 }
