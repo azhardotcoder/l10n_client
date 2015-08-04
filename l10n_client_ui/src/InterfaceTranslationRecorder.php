@@ -25,7 +25,7 @@ class InterfaceTranslationRecorder implements TranslatorInterface  {
    * @inheritdoc
    */
   public function getStringTranslation($langcode, $string, $context) {
-    if ($langcode != 'en' || locale_translate_english()) {
+    if ($langcode != 'en' || locale_is_translatable('en')) {
       $this->strings[$langcode][$context][$string] = TRUE;
     }
     return FALSE;

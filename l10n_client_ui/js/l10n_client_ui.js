@@ -12,7 +12,7 @@
    */
   Drupal.behaviors.l10n_client_ui = {
     attach: function (context) {
-      $('body').once('l10n_client_ui', function () {
+      $('body').once('l10n_client_ui').each(function () {
         $('#toolbar-tab-l10n_client_ui').click(function () {
           if (Drupal.l10n_client_ui.buildUi()) {
             Drupal.l10n_client_ui.toggle(true);
