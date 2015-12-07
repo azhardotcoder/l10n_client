@@ -7,29 +7,30 @@
 
 use Drupal\Core\Form\FormStateInterface;
 
-function l10n_client_contributor_form_l10n_client_ui_settings_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function l10n_client_contributor_form_locale_translate_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
 
   $config = \Drupal::configFactory()->getEditable('l10n_client_contributor.settings');
   $form['l10n_client_contributor_use_server'] = array(
-    '#title'         => t('Enable sharing translations with server'),
+    '#title'         => t('Enable sharing translation modifications with server'),
     '#type'          => 'checkbox',
     '#default_value' => $config->get('use_server'),
   );
   $form['l10n_client_contributor_server'] = array(
     '#title'         => t('Address of localization server to use'),
     '#type'          => 'textfield',
-    '#description'   => t('Each translation submission will also be submitted to this server. We suggest you enter <a href="@localize">http://localize.drupal.org</a> to share with the greater Drupal community. Make sure you set up an API-key in the user account settings for each user that will participate in the translations.', array('@localize' => 'http://localize.drupal.org')),
+    '#description'   => t('Each local translation submission or change will also be submitted to this server. We suggest you enter <a href="@localize">http://localize.drupal.org/</a> to share with the greater Drupal community. Make sure you set up an API-key in the user account settings for each user that will participate in the translations.', array('@localize' => 'http://localize.drupal.org/')),
     '#default_value' => $config->get('server'),
+    '#states' => array('visible' => array(':input[name=l10n_client_contributor_use_server]' => array('checked' => TRUE))),
   );
 
-  $form['#validate'][] = 'l10n_client_contributor_form_l10n_client_ui_settings_form_validate';
-  $form['actions']['submit']['#submit'][] = 'l10n_client_contributor_form_l10n_client_ui_settings_form_submit';
+  $form['#validate'][] = 'l10n_client_contributor_form_locale_translate_settings_validate';
+  $form['actions']['submit']['#submit'][] = 'l10n_client_contributor_form_locale_translate_settings_submit';
 }
 
 /**
  * Validation for added settings on localization client UI settings form.
  */
-function l10n_client_contributor_form_l10n_client_ui_settings_form_validate($form, FormStateInterface $form_state) {
+function l10n_client_contributor_form_locale_translate_settings_validate($form, FormStateInterface $form_state) {
   // Verify connection with the server if enabled.
   if ($form_state->getValue('l10n_client_contributor_use_server')) {
     if (!$form_state->isValueEmpty('l10n_client_contributor_server')) {
@@ -56,7 +57,7 @@ function l10n_client_contributor_form_l10n_client_ui_settings_form_validate($for
 /**
  * Submission function for additional settings on localization client settings.
  */
-function l10n_client_contributor_form_l10n_client_ui_settings_form_submit($form, FormStateInterface $form_state) {
+function l10n_client_contributor_form_locale_translate_settings_submit($form, FormStateInterface $form_state) {
   \Drupal::configFactory()->getEditable('l10n_client_contributor.settings')
     ->set('use_server', $form_state->getValue('l10n_client_contributor_use_server'))
     ->set('server', $form_state->getValue('l10n_client_contributor_server'))
