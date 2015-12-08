@@ -21,7 +21,7 @@ use Drupal\Core\TypedData\DataDefinition;
  *   description = @Translation("API key for localization contribution."),
  *   category = @Translation("Text"),
  *   default_widget = "l10n_client_contributor_key_widget",
- *   default_formatter = "string"
+ *   no_ui = TRUE
  * )
  */
 class ClientApiKeyItem extends StringItem {

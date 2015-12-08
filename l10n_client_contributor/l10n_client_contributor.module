@@ -5,7 +5,12 @@
  * Submits translations to a remote localization server.
  */
 
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Field\FieldDefinitionInterface;
+use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\user\UserInterface;
 
 function l10n_client_contributor_form_locale_translate_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
 
@@ -62,4 +67,23 @@ function l10n_client_contributor_form_locale_translate_settings_submit($form, Fo
     ->set('use_server', $form_state->getValue('l10n_client_contributor_use_server'))
     ->set('server', $form_state->getValue('l10n_client_contributor_server'))
     ->save();
+}
+
+/**
+ * Implements hook_entity_field_access().
+ */
+function l10n_client_contributor_entity_field_access($operation, FieldDefinitionInterface $field_definition, AccountInterface $account, FieldItemListInterface $items = NULL) {
+  // Never allow viewing the API key on an entity.
+  if ($field_definition->getFieldStorageDefinition()->getType() == 'l10n_client_contributor_key' && $operation == 'view') {
+    return AccessResult::forbidden();
+  }
+  return AccessResult::neutral();
+}
+
+/**
+ * Get user based semi unique token. Ensure keys are unique for each client.
+ */
+function l10n_client_contributor_user_token(UserInterface $account) {
+  $key = \Drupal::service('private_key')->get();
+  return md5('l10n_client_contributor' . $account->id() . $key);
 }
