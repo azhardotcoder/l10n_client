@@ -68,7 +68,7 @@ function l10n_client_contributor_form_locale_translate_settings_alter(&$form, Fo
   );
 
   $form['#validate'][] = 'l10n_client_contributor_form_locale_translate_settings_validate';
-  $form['actions']['submit']['#submit'][] = 'l10n_client_contributor_form_locale_translate_settings_submit';
+  $form['#submit'][] = 'l10n_client_contributor_form_locale_translate_settings_submit';
 }
 
 /**
