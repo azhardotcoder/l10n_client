@@ -1,5 +1,0 @@
-name = l10n client test
-description = localization client test module
-core = 7.x
-dependencies[] = l10n_client
-hidden = TRUE
