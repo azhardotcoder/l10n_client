@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\l10n_client_contributor\Plugin\Field\FieldWidget\ClientApiKeyDefaultWidget.
- */
-
 namespace Drupal\l10n_client_contributor\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Field\Plugin\Field\FieldWidget\StringTextfieldWidget;

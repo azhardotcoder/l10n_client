@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\l10n_client_ui\Form\SettingsForm
- */
-
 namespace Drupal\l10n_client_ui\Form;
 
 use Drupal\Core\Form\ConfigFormBase;

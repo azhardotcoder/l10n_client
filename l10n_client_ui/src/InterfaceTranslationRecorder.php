@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @file
- * Contains \Drupal\l10n_client_ui\InterfaceTranslationRecorder.
- */
-
 namespace Drupal\l10n_client_ui;
 
 use Drupal\Core\StringTranslation\Translator\TranslatorInterface;
