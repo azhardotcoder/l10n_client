@@ -34,6 +34,23 @@ function l10n_client_contributor_install() {
     $form_display = \Drupal::entityTypeManager()
       ->getStorage('entity_form_display')
       ->load('user.user.default');
+
+    // If the site does not yet have a default user form display in
+    // configuration, create one now for further modification.
+    // @see entity_get_form_display()
+    if (!$form_display) {
+      $values = array(
+        'targetEntityType' => 'user',
+        'bundle' => 'user',
+        'mode' => 'default',
+        'status' => TRUE,
+      );
+
+      $form_display = Drupal::entityTypeManager()
+        ->getStorage('entity_form_display')
+        ->create($values);
+    }
+
     $form_display
       ->setComponent('l10n_client_contributor_key', array('type' => 'l10n_client_contributor_key_widget'))
       ->save();
