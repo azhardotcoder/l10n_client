@@ -41,7 +41,7 @@ function l10n_client_contributor_help($route_name, RouteMatchInterface $route_ma
           return '<p><strong>' . t('All changes made will be automatically submitted to :server too. Thanks for contributing!', array(':server' => $config->get('server'))) . '</strong></p>';
         }
         else {
-          return '<p><strong>' . t('<a href=":edit">Set your personal API key</a> to contribute translations automatically to :server. Thanks for contributing!', array(':edit' => Url::fromRoute('entity.user.edit_form', array('user' => $account->id()))->toString(), ':server' => $config->get('server'))) . '</strong></p>';
+          drupal_set_message(t('<a href=":edit">Set your personal API key</a> to contribute translations automatically to :server. Thanks for contributing!', array(':edit' => Url::fromRoute('entity.user.edit_form', array('user' => $account->id()))->toString(), ':server' => $config->get('server'))), 'warning');
         }
       }
       break;
