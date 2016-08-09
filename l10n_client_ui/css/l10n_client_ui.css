@@ -26,7 +26,7 @@
   background-image: url(../images/translate_icon_ffffff.svg);
 }
 
-/* @todo Remove once http://drupal.org/node/1916690 is resolved. */
+/* @todo Remove once https://drupal.org/node/1916690 is resolved. */
 .toolbar .l10n_client_ui-toolbar-tab.toolbar-tab.hidden {
   display: none;
 }
@@ -118,7 +118,7 @@
   left: 0;
 }
 
-/* @todo Remove once http://drupal.org/node/1916690 is resolved. */
+/* @todo Remove once https://drupal.org/node/1916690 is resolved. */
 .toolbar .tour-toolbar-tab.toolbar-tab.hidden {
   display: none;
 }
