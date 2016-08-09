@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\comment\Controller;
+namespace Drupal\l10n_client_test\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\HttpFoundation\Response;
