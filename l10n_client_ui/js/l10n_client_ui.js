@@ -117,7 +117,7 @@
   };
 
   Drupal.l10n_client_ui.findClosest = function (index, text, elements) {
-    var children = $(elements).find(':contains("' + text + '")');
+    var children = $(elements).find(':contains("' + text.replace(/(["])/g,'\\$1') + '")');
     if (children.length) {
       var exact = children.filter(function () {
         return $(this).html() === text;
