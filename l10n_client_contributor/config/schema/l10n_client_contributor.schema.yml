@@ -8,3 +8,11 @@ l10n_client_contributor.settings:
     server:
       type: string
       label: 'Localization server url'
+
+field.storage_settings.l10n_client_contributor_key:
+  type: field.storage_settings.string
+  label: 'Localization client contributor API key settings'
+
+field.widget.settings.l10n_client_contributor_key_widget:
+  type: field.widget.settings.string_textfield
+  label: 'Localization client contributor API key display format settings'
