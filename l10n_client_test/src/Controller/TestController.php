@@ -20,8 +20,8 @@ class TestController extends ControllerBase {
   public function mockPage() {
     // @todo using state may not be good for testing from the test itself.
     $this->state()->set('l10n_client_test_mock_request', file_get_contents('php://input'));
-    $response = new Response();
-    $response->create('<?xml version="1.0"?>
+
+    $response = Response::create('<?xml version="1.0"?>
 <methodResponse>
   <params>
   <param>
@@ -31,7 +31,8 @@ class TestController extends ControllerBase {
 </struct></value>
   </param>
   </params>
-</methodResponse>');
+</methodResponse>', 200)->setSharedMaxAge(300);
+    $response->headers->set('Content-Type', 'application/xml');
     return $response;
   }
 
