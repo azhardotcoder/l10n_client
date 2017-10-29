@@ -141,7 +141,7 @@ function l10n_client_contributor_form_locale_translate_edit_form_alter(&$form, F
         $form['actions']['submit']['#value'] = t('Save and contribute');
         $form['actions']['submit']['#button_type'] = 'primary';
         // Wire in remote submission to the form submission.
-        $form['actions']['submit']['#submit'][] = 'l10n_client_contributor_form_locale_translate_edit_form_submit';
+        array_unshift($form['#submit'], 'l10n_client_contributor_form_locale_translate_edit_form_submit');
       }
     }
   }
