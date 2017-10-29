@@ -27,7 +27,7 @@ function l10n_client_ui_access_tools() {
  */
 function l10n_client_ui_toolbar() {
   if (!l10n_client_ui_access_tools()) {
-    return FALSE;
+    return;
   }
 
   $tab['l10n_client_ui'] = array(
