@@ -5,6 +5,7 @@
  * Submits translations to a remote localization server.
  */
 
+use Drupal\Component\Gettext\PoItem;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Field\FieldDefinitionInterface;
 use Drupal\Core\Field\FieldItemListInterface;
@@ -41,7 +42,7 @@ function l10n_client_contributor_help($route_name, RouteMatchInterface $route_ma
           return '<p><strong>' . t('All changes made will be automatically submitted to :server too. Thanks for contributing!', array(':server' => $config->get('server'))) . '</strong></p>';
         }
         else {
-          drupal_set_message(t('<a href=":edit">Set your personal API key</a> to contribute translations automatically to :server. Thanks for contributing!', array(':edit' => Url::fromRoute('entity.user.edit_form', array('user' => $account->id()))->toString(), ':server' => $config->get('server'))), 'warning');
+          \Drupal::messenger()->addWarning(t('<a href=":edit">Set your personal API key</a> to contribute translations automatically to :server. Thanks for contributing!', array(':edit' => Url::fromRoute('entity.user.edit_form', array('user' => $account->id()))->toString(), ':server' => $config->get('server'))));
         }
       }
       break;
@@ -85,7 +86,7 @@ function l10n_client_contributor_form_locale_translate_settings_validate($form, 
           $form_state->setErrorByName('l10n_client_contributor_server', t('The given server could not handle the v2.0 remote submission API.'));
         }
         else {
-          drupal_set_message(t('Verified that the specified server can handle remote string submissions. Supported languages: %languages.', array('%languages' => $response['languages'])));
+          \Drupal::messenger()->addMessage(t('Verified that the specified server can handle remote string submissions. Supported languages: %languages.', array('%languages' => $response['languages'])));
         }
       }
       else {
@@ -196,7 +197,7 @@ function l10n_client_contributor_save_translation($langcode, array $lids, array 
     // Plural translations are saved in a delimited string. To be able to
     // compare the new strings with the existing strings a string in the same
     // format is created.
-    $new_translation_string_delimited = implode(\Drupal\Core\StringTranslation\PluralTranslatableMarkup::DELIMITER, $new_translation['translations']);
+    $new_translation_string_delimited = implode(PoItem::DELIMITER, $new_translation['translations']);
 
     // Generate an imploded string without delimiter, to be able to run
     // empty() on it.
@@ -234,10 +235,10 @@ function l10n_client_contributor_save_translation($langcode, array $lids, array 
 
   // END mostly copy of TranslateEditForm::submitForm().
   if ($contributed) {
-    drupal_set_message(\Drupal::translation()->formatPlural($contributed, 'Just contributed a translation to the community. Great job!', 'Contributed @count translations to the community, rock!'));
+    \Drupal::messenger()->addMessage(\Drupal::translation()->formatPlural($contributed, 'Just contributed a translation to the community. Great job!', 'Contributed @count translations to the community, rock!'));
   }
   if ($refused) {
-    drupal_set_message(t('Errors while contributing translations:') . '<ul><li>' . implode('</li><li>', $refused) . '</li></ul>', 'error');
+    \Drupal::messenger()->addError(t('Errors while contributing translations:') . '<ul><li>' . implode('</li><li>', $refused) . '</li></ul>');
   }
 
   return $message;

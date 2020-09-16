@@ -34,7 +34,7 @@ class L10nSubmitTranslationTest extends BrowserTestBase {
   public function testTranslationSubmission() {
     global $base_url;
 
-    $url = URL::fromRoute('l10n_client_test.xmlrpc');
+    $url = Url::fromRoute('l10n_client_test.xmlrpc');
     $url_path = str_replace('/xmlrpc.php', '', $url->getInternalPath());
     $config = \Drupal::configFactory()->getEditable('l10n_client_contributor.settings');
     $config->set('server', $base_url . '/' . $url_path);
