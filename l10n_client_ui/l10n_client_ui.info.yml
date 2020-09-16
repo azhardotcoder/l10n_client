@@ -5,5 +5,5 @@ type: module
 core: 9.x
 configure: l01n_client_ui.settings
 dependencies:
-  - locale
+  - drupal:locale
 package: Multilingual

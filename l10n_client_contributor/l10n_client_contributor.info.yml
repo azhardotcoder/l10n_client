@@ -5,6 +5,6 @@ core: 8.x
 core_version_requirement: ^8 || ^9
 configure: locale.settings
 dependencies:
-  - xmlrpc
-  - locale
+  - xmlrpc:xmlrpc
+  - drupal:locale
 package: Multilingual

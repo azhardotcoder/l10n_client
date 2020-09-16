@@ -4,6 +4,6 @@ type: module
 core: 8.x
 core_version_requirement: ^8 || ^9
 dependencies:
-  - l10n_client_contributor
+  - l10n_client:l10n_client_contributor
 package: Multilingual
 hidden: true
