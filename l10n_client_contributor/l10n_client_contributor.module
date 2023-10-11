@@ -246,7 +246,7 @@ function l10n_client_contributor_save_translation($langcode, array $lids, array 
     \Drupal::messenger()->addMessage(\Drupal::translation()->formatPlural($contributed, 'Just contributed a translation to the community. Great job!', 'Contributed @count translations to the community, rock!'));
   }
   if ($refused) {
-    \Drupal::messenger()->addError(t('Errors while contributing translations:') . '<ul><li>' . implode('</li><li>', $refused) . '</li></ul>');
+    \Drupal::messenger()->addError(t('There was an error while contributing translations, please see the log for details.'));
   }
 
   return $message;
