@@ -15,8 +15,7 @@ use Drupal\Core\Ajax\CommandInterface;
 class SaveTranslationCommand implements CommandInterface {
 
   /**
-   * A drupal-data-selector value for a submit button which was used
-   * for saving the specified translation.
+   * A submit button which was used for saving the specified translation.
    *
    * @var string
    */

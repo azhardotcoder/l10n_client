@@ -2,11 +2,11 @@
 
 namespace Drupal\l10n_client_ui\Form;
 
+use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\l10n_client_ui\Ajax\SaveTranslationCommand;
 
 /**
@@ -58,6 +58,7 @@ class TranslationForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state): array {
     $form['filters'] = [
       '#type' => 'container',
+      '#attributes' => ['class' => ['clearfix']],
     ];
     $form['filters']['language'] = [
       '#title' => $this->t('Language'),
@@ -213,7 +214,6 @@ class TranslationForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-
     $triggeringElement = $form_state->getTriggeringElement();
     $row = $triggeringElement['#attributes']['data-l10n-client-ui-row'];
 

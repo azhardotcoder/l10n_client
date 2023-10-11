@@ -1,7 +1,7 @@
 name: 'Localization Client Interface'
 description: 'On-page tool for easier interface translation.'
 type: module
-core_version_requirement: ^8.8 || ^9
+core_version_requirement: ^8.8 || ^9 || ^10
 configure: l01n_client_ui.settings
 dependencies:
   - drupal:locale
