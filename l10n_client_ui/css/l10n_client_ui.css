@@ -37,17 +37,11 @@
 .l10n_client_ui--container .ui-dialog {
   display: block;
 }
-.l10n_client_ui--container #edit-list {
-  overflow-y: scroll;
-  height: 180px;
-  clear: both;
-}
 .l10n_client_ui--source-string,
 .l10n_client_ui--translation-string {
   width: 40%;
 }
-.l10n_client_ui--skip,
-.l10n_client_ui--save {
+.l10n_client_ui--skip {
   width: 40px;
   text-indent: -200px;
   overflow: hidden;
@@ -55,13 +49,36 @@
   background-repeat: no-repeat;
   background-position: 50% 50%;
 }
-.l10n_client_ui--save {
+
+
+.l10n_client_ui--save input.button,
+.l10n_client_ui--save input.button:hover,
+.l10n_client_ui--save input.button:focus,
+.l10n_client_ui--save input.button:active,
+.l10n_client_ui--save input.button:disabled {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: transparent;
+  box-shadow: none;
+  border: none;
+  width: 40px;
+  border: 0;
+}
+.l10n_client_ui--save input.button {
   background-image: url(../images/check_bebebe.svg);
 }
-.l10n_client_ui--save.activated {
+.l10n_client_ui--save input.button:hover,
+.l10n_client_ui--save input.button:focus {
   background-image: url(../images/check_0074bd.svg);
 }
-.l10n_client_ui--save.saving {
+
+.l10n_client_ui--save input.button:disabled,
+.l10n_client_ui--save input.button:disabled:hover {
+  background-image: url(../images/check_bebebe.svg);
+}
+
+.l10n_client_ui--save input.button.saved:disabled,
+.l10n_client_ui--save input.button.saved:disabled:hover {
   background-image: url(../images/check_77b259.svg);
 }
 
