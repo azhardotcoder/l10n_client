@@ -1,0 +1,7 @@
+l10n_client_contributor.login:
+  path: '/admin/config/regional/translate/contributor/login'
+  defaults:
+    _title: 'Contributor login'
+    _controller: '\Drupal\l10n_client_contributor\Controller\LoginController'
+  requirements:
+    _permission: 'contribute translations to localization server'
