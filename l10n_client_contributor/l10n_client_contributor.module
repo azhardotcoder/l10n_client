@@ -85,27 +85,7 @@ function l10n_client_contributor_form_locale_translate_settings_alter(&$form, Fo
  */
 function l10n_client_contributor_form_locale_translate_settings_validate($form, FormStateInterface $form_state) {
   // Verify connection with the server if enabled.
-  // if ($form_state->getValue('l10n_client_contributor_use_server')) {
-  //   if (!$form_state->isValueEmpty('l10n_client_contributor_server')) {
-  //     // Try to invoke the remote string submission with a test request.
-  //     // Todo: use rest
-  //     $response = xmlrpc($form_state->getValue('l10n_client_contributor_server') . '/xmlrpc.php', array('l10n.server.test' => array('2.0')));
-  //     if ($response && !empty($response['name']) && !empty($response['version'])) {
-  //       if (empty($response['supported']) || !$response['supported']) {
-  //         $form_state->setErrorByName('l10n_client_contributor_server', t('The given server could not handle the v2.0 remote submission API.'));
-  //       }
-  //       else {
-  //         \Drupal::messenger()->addMessage(t('Verified that the specified server can handle remote string submissions. Supported languages: %languages.', array('%languages' => $response['languages'])));
-  //       }
-  //     }
-  //     else {
-  //       $form_state->setErrorByName('l10n_client_contributor_server', t('Invalid localization server address specified. Make sure you specified the right server address.'));
-  //     }
-  //   }
-  //   else {
-  //     $form_state->setErrorByName('l10n_client_contributor_server', t('You should provide a server address, such as https://localize.drupal.org/'));
-  //   }
-  // }
+  // @todo
 }
 
 /**
@@ -145,10 +125,11 @@ function l10n_client_contributor_form_locale_translate_edit_form_alter(&$form, F
   if ($config->get('use_server')) {
     /** @var \Drupal\user\UserInterface $account */
     $account = User::load(\Drupal::currentUser()->id());
+    /** @var \Drupal\l10n_client_contributor\L10nClientContributorHelperInterface $helper_service */
+    $helper_service = \Drupal::service('l10n_client_contributor.helper');
     if (
       $account->hasPermission('contribute translations to localization server') &&
-      TRUE &&
-      TRUE &&
+      $helper_service->isAuthenticated() &&
       isset($form['actions']['submit'])
     ) {
       // Make the button more expressive of what is happening.
