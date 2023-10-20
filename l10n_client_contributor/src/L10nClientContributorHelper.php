@@ -9,6 +9,7 @@ use Drupal\Core\Logger\LoggerChannelFactory;
 use Drupal\Core\Logger\LoggerChannelInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\oauth2_client\Service\Oauth2ClientServiceInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @todo Add class description.
@@ -75,42 +76,26 @@ final class L10nClientContributorHelper implements L10nClientContributorHelperIn
         'context' => $context,
       ],
     ]);
-  }
-  catch (\Exception $e) {
-    $message = $e->getMessage();
-    $this->logger->error($message);
-    return [FALSE, $message];
-  }
+    }
+    catch (\Exception $e) {
+      $message = $e->getMessage();
+      $this->logger->error($message);
+      return [FALSE, $message];
+    }
   
-    // $response = xmlrpc(
-    //   $server_url . '/xmlrpc.php',
-    //   array(
-    //     'l10n.submit.translation' => array(
-    //       $langcode,
-    //       $source,
-    //       $translation,
-    //       (int) $server_uid,
-    //       $user_token,
-    //       $signature,
-    //     ),
-    //   )
-    // );
-  
-    if ($response) {
+    if ($response instanceof ResponseInterface) {
       if ($response->getStatusCode() == 201) {
         $message = $this->t('Translation sent and accepted by @server.', array('@server' => $server_url));
         $this->logger->notice('Translation sent and accepted by @server.', array('@server' => $server_url));
       }
       else {
-        $message = $this->t('Translation rejected by @server. Reason: %reason', array('%reason' => $response->getContent(), '@server' => $server_url));
-        \Drupal::logger('l10n_client_contributor')->error('Translation rejected by @server. Reason: %reason', array('%reason' => $response['reason'], '@server' => $server_url));
+        $message = $this->t('Translation rejected by @server. Reason: %reason', array('%reason' => $response->getReasonPhrase(), '@server' => $server_url));
+        $this->logger->error('Translation rejected by @server. Reason: %reason', array('%reason' => $response->getReasonPhrase(), '@server' => $server_url));
       }
       return array($response->getStatusCode(), $message);
     }
     else {
-      // module_load_include('inc', 'xmlrpc', 'xmlrpc');
-      $message = $this->t('The connection with @server failed with the following error: %error_code: %error_message.', array('%error_code' => xmlrpc_errno(), '%error_message' => xmlrpc_error_msg(), '@server' => $server_url));
-      \Drupal::logger('l10n_client_contributor')->error('The connection with @server failed with the following error: %error_code: %error_message.', array('%error_code' => xmlrpc_errno(), '%error_message' => xmlrpc_error_msg(), '@server' => $server_url));
+      $message = $this->t('The connection with @server failed.');
       return array(FALSE, $message);
     }
   }
