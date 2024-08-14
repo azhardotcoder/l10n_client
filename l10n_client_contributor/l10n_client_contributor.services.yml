@@ -1,4 +1,4 @@
 services:
   l10n_client_contributor.helper:
     class: Drupal\l10n_client_contributor\L10nClientContributorHelper
-    arguments: ['@config.factory', '@logger.factory', '@oauth2_client.service', '@http_client']
+    arguments: ['@config.factory', '@logger.factory', '@http_client']

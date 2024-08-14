@@ -1,2 +1,4 @@
 use_server: true
 server: 'https://localize.drupal.org/'
+basic_auth_user: ''
+basic_auth_pass: ''

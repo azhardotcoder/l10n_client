@@ -7,7 +7,13 @@ l10n_client_contributor.settings:
       label: 'Use server'
     server:
       type: string
-      label: 'Localization server url'
+      label: 'Localization server URL'
+    basic_auth_user:
+      type: string
+      label: 'Basic Auth Username'
+    basic_auth_pass:
+      type: string
+      label: 'Basic Auth Password'
 
 field.storage_settings.l10n_client_contributor_key:
   type: field.storage_settings.string
