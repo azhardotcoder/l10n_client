@@ -8,6 +8,7 @@ use Drupal\Core\Ajax\SettingsCommand;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\l10n_client_ui\Ajax\SaveTranslationCommand;
+use Drupal\Core\Messenger\MessengerInterface;
 
 /**
  * Settings form for the localization client user interface module.
@@ -167,10 +168,10 @@ class TranslationForm extends FormBase {
     }
 
     // Add a hidden button to trigger form rebuilding. When a cache render is
-    // enabled the module can't collect all strings from a page, ajax api
+    // enabled, the module can't collect all strings from a page; ajax API
     // ignores a render cache, and it allows us to collect all strings from
     // the page.
-    $form['#preifx'] = '<div id="l10n-client-ui-translation-form">';
+    $form['#prefix'] = '<div id="l10n-client-ui-translation-form">';
     $form['#suffix'] = '</div>';
     $form['rebuild'] = [
       '#type' => 'button',
@@ -181,7 +182,7 @@ class TranslationForm extends FormBase {
         'style' => 'display: none !important',
       ],
       '#ajax' => [
-        'wrapper'  => 'l10n-client-ui-translation-form',
+        'wrapper' => 'l10n-client-ui-translation-form',
         'callback' => '::rebuild',
       ],
     ];
@@ -192,11 +193,11 @@ class TranslationForm extends FormBase {
   /**
    * Rebuilds the form on ajax request.
    *
-   * During ajax drupal doesn't use a render cache it allows us to show all
+   * During ajax, Drupal doesn't use a render cache; it allows us to show all
    * strings on the active page.
    *
    * @param array $form
-   *   Render array representing from.
+   *   Render array representing the form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   Current form state.
    *
@@ -237,6 +238,22 @@ class TranslationForm extends FormBase {
         'translation' => $target,
       ])->save();
 
+      // Send the translation to the server.
+      $helper_service = \Drupal::service('l10n_client_contributor.helper');
+      list($code, $message) = $helper_service->sendTranslation(
+        $langcode,
+        $source,
+        $target,
+        $context
+      );
+
+      if ($code !== 201) {
+        \Drupal::messenger()->addError(t('There was an error contributing the translation to the server: @message', ['@message' => $message]));
+      } else {
+        \Drupal::messenger()->addMessage(t('Translation successfully contributed to the server.'));
+      }
+
+      // Refresh translations locally.
       _locale_refresh_translations([$langcode], [$string->lid]);
       _locale_refresh_configuration([$langcode], [$string->lid]);
     }
@@ -248,7 +265,7 @@ class TranslationForm extends FormBase {
    * Implements the submit handler for the ajax call.
    *
    * @param array $form
-   *   Render array representing from.
+   *   Render array representing the form.
    * @param \Drupal\Core\Form\FormStateInterface $form_state
    *   Current form state.
    *
